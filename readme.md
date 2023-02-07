@@ -12,3 +12,5 @@
 ## Template method
 
 ![Image](https://raw.githubusercontent.com/devsuperior/aula-dp1/main/img/template-method.png "Template method")
+
+# Material desenvolvido pela DevSuperior, estou usando como material de apoio, conforme proposto pela instituição. Créditos ao Professor Nélio Alves.
