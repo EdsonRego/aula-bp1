@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
 
 import com.devsuperior.integrations.dto.EmailDTO;
+import com.devsuperior.integrations.services.exceptions.EmailException;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -18,10 +18,9 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
-@Service
-public class SendgridService {
+public class SendGridEmailService implements EmailService{
 
-	private Logger LOG = LoggerFactory.getLogger(SendgridService.class);
+	private Logger LOG = LoggerFactory.getLogger(SendGridEmailService.class);
 
 	@Autowired
 	private Environment env;
@@ -58,12 +57,11 @@ public class SendgridService {
 				Response response = sendGrid.api(request);
 				if (response.getStatusCode() >= 400 && response.getStatusCode() <= 500) {
 					LOG.error("Error sending email: " + response.getBody());
+					throw new EmailException(response.getBody());
 				}
-				else {
 					LOG.info("Email sent! Status = " + response.getStatusCode());				
-				}
 			} catch (IOException e) {
-				LOG.error("Error sending email: " + e.getMessage());
+				throw new EmailException(e.getMessage());
 			}
 		}
 	}
